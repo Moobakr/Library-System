@@ -1,0 +1,381 @@
+#include <iostream>
+#include <string>
+#include <sstream>
+#include <algorithm>
+
+
+using namespace std;
+
+struct book
+{
+    string name;
+    string author;
+    string keyword;
+    int pages;
+    double price;
+    long int id;
+    book* next;
+
+};
+
+
+book* head = NULL;
+
+
+void insert_book();
+
+
+bool containsWord(const string& sentence, const string& word) {
+    return sentence.find(word) != string::npos;
+}
+
+
+int n;
+
+void Find();
+
+void Find_id();
+
+void Find_author();
+
+void Find_name();
+
+void Find_keyword();
+
+void Option();
+
+void Add();
+
+
+int main()
+{
+    cout<<"Welcome to our Library"<<endl<<endl;
+
+    Option();
+
+
+
+
+}
+
+void Find()
+{
+
+        system("cls");
+        cout<<"If you want to find it by id press 1"<<endl;
+        cout<<"If you want to find it by author's name press 2"<<endl;
+        cout<<"If you want to find it by the book's name press 3"<<endl;
+        cout<<"If you want to find it by the keywords press 4"<<endl;
+
+        int c;
+        cin>>c;
+
+        if(c == 1)
+        {
+            Find_id();
+        }
+        else if(c == 2)
+        {
+            Find_author();
+        }
+        else if(c == 3)
+        {
+            Find_name();
+        }
+        else if(c == 4)
+        {
+            Find_keyword();
+        }
+        else
+        {
+            cout<<"You entered the wrong choice, Do you want to choose again(1) or exit(2)?"<<endl;
+            int v;
+            cin>>v;
+
+            if(v == 1)
+            {
+                Find();
+            }
+        }
+
+}
+
+void Find_id()
+{
+
+    system("cls");
+        book* current_book;
+        int x;
+        cout<<"Enter your book's id: ";
+        cin>>x;
+
+        if(head == NULL)
+        {
+            cout<<"The Library is Empty"<<endl;
+        }
+        else
+        {
+            current_book = head;
+            while(current_book)
+            {
+                if (current_book->id == x)
+                {
+                    cout<<"Your books id is "<<x<<endl;
+                    cout<<"and it's name is "<<current_book->name<<endl;
+                    cout<<"and it's author is "<<current_book->author<<endl;
+                    cout<<"and it has "<<current_book->pages<<" pages"<<endl;
+                    cout<<"and it's price is "<<current_book->price<<endl;
+                }
+                current_book = current_book->next;
+
+            }
+        }
+
+        cout<<endl<<endl;
+        Option();
+
+
+}
+
+void Find_author()
+{
+    system("cls");
+    book* current_book;
+    cin.ignore();
+    cout<<"Enter the name of the author: ";
+    string AUTHOR;
+    getline(cin, AUTHOR);
+
+    if(head == NULL)
+    {
+        cout<<"The Library is Empty"<<endl;
+    }
+    else
+    {
+        current_book = head;
+        while(current_book)
+        {
+            if(current_book->author == AUTHOR )
+            {
+                cout<<"- "<<current_book->name<<endl;
+            }
+            current_book = current_book->next;
+        }
+
+    }
+
+    cout<<endl<<endl;
+    Option();
+}
+
+void Find_name()
+{
+    system("cls");
+
+    book* current_book;
+    cin.ignore();
+    cout<<"Search: ";
+    string Search;
+    getline(cin, Search);
+
+    istringstream iss(Search);
+    string word;
+
+    bool found;
+    if(head == NULL)
+    {
+        cout<<"The Library is Empty"<<endl;
+    }
+    else
+    {
+        current_book = head;
+        while(current_book)
+        {
+            bool foundMatch = false;
+
+            iss.seekg(0);
+
+            while (iss >> word || !iss.eof())
+            {
+                transform(current_book->name.begin(), current_book->name.end(), current_book->name.begin(), ::tolower);
+                transform(word.begin(), word.end(), word.begin(), ::tolower);
+
+                if (containsWord(current_book->name, word)) {
+                    foundMatch = true;
+                    found = true;
+                    break;
+                }
+            }
+            if (foundMatch) {
+            cout<<"- "<<"name : "<<current_book->name<<" - "<<"author: "<<current_book->author<<" - "<<"pages : "<<current_book->pages<<" - "<<"price : "<<current_book->price<<endl;
+
+            }
+            current_book = current_book->next;
+        }
+    }
+    if(found != true)
+    {
+        cout<<"No Match Found"<<endl;
+    }
+
+    cout<<endl<<endl;
+    Option();
+}
+
+void Find_keyword()
+{
+    system("cls");
+    book* current_book;
+    cin.ignore();
+    cout<<"Search: ";
+    string Search;
+    getline(cin, Search);
+
+    istringstream iss(Search);
+    string word;
+
+    bool found;
+    if(head == NULL)
+    {
+        cout<<"The Library is Empty"<<endl;
+    }
+    else
+    {
+        current_book = head;
+        while(current_book)
+        {
+            bool foundMatch = false;
+
+            iss.seekg(0);
+
+            while (iss >> word || !iss.eof())
+            {
+                transform(current_book->keyword.begin(), current_book->keyword.end(), current_book->keyword.begin(), ::tolower);
+                transform(word.begin(), word.end(), word.begin(), ::tolower);
+
+                if (containsWord(current_book->keyword, word)) {
+                    foundMatch = true;
+                    found = true;
+                    break;
+                }
+            }
+            if (foundMatch) {
+            cout<<"- "<<"name : "<<current_book->name<<" - "<<"author: "<<current_book->author<<" - "<<"pages : "<<current_book->pages<<" - "<<"price : "<<current_book->price<<endl;
+
+            }
+            current_book = current_book->next;
+        }
+    }
+
+    if(found != true)
+    {
+        cout<<"No Match Found"<<endl;
+    }
+
+    cout<<endl<<endl;
+    Option();
+}
+
+void Option()
+{
+
+        cout<<"What do you want to do?"<<endl<<endl;
+        cout<<"Want to find a book press 1"<<endl;
+        cout<<"Want to add a book press 2"<<endl;
+        cout<<"Want to exit press 3"<<endl;
+
+        int x;
+        cin>>x;
+
+        if(x == 1)
+        {
+            Find();
+        }
+        else if(x == 2)
+        {
+            Add();
+        }
+        else if(x == 3)
+        {
+            cout<<"Thanks for using our program"<<endl;
+        }
+        else
+        {
+            cout<<"You entered the wrong choice, Do you want to choose again(1) or exit(2)?"<<endl;
+            int v;
+            cin>>v;
+
+            if(v == 1)
+            {
+                Option();
+            }
+            else
+            {
+                cout<<"Thanks for using our program"<<endl;
+            }
+        }
+}
+
+void Add()
+{
+    system("cls");
+    cout<<"How many books do you want to add: ";
+    cin>>n;
+
+
+
+    for(int i = 0;i < n; i++)
+    {
+        cin.ignore();
+        insert_book();
+
+    }
+
+    Option();
+}
+
+void insert_book()
+{
+    book* new_book, *last;
+    new_book = new book;
+
+        cout<<"Enter the book's name: ";
+        getline(cin, new_book->name);
+
+        cout<<"Enter the book's author: ";
+        getline(cin, new_book->author);
+
+        cout<<"Enter the book's keywords: ";
+        getline(cin, new_book->keyword);
+
+        cout<<"How many pages does that book has: ";
+        cin>>new_book->pages;
+
+        cout<<"Enter the book's price: ";
+        cin>>new_book->price;
+
+        cout<<"Enter the book's id: ";
+        cin>>new_book->id;
+
+
+
+        cout<<endl;
+
+
+        if(head == NULL)
+        {
+            head = new_book;
+            new_book->next = NULL;
+        }
+        else
+        {
+            last = head;
+            while(last->next != NULL)
+                {
+                    last = last->next;
+                }
+            last->next = new_book;
+            new_book->next = NULL;
+        }
+
+}
